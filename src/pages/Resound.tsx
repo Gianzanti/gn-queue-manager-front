@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import video from '../assets/video_resound.mp4';
+import video from '../assets/resound.mp4';
 import VideoPlayer from '../components/VideoPlayer';
 import VisitorForm from '../components/VisitorForm';
 

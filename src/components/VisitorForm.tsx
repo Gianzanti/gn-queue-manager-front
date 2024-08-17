@@ -69,7 +69,8 @@ function VisitorForm({ title, customer }: VisitorFormProps) {
         addVisitor.mutate(formData);
     };
 
-    if (addVisitor.isSuccess) return <FSMessage message='A Resound agradece sua participação!' />;
+    if (addVisitor.isSuccess)
+        return <FSMessage message={`A ${customer} agradece sua participação!`} />;
 
     return (
         <Box
@@ -78,7 +79,7 @@ function VisitorForm({ title, customer }: VisitorFormProps) {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 2,
-                width: 600,
+                width: '90%',
                 margin: '0 auto',
                 mt: 5,
             }}

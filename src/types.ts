@@ -5,6 +5,7 @@ export interface Visitor {
     email: string;
     phone: string;
     lgpd: boolean;
+    created_at?: string;
     image_rights: boolean;
     observations?: string;
     confirmVisit: boolean;

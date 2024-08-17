@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import video from '../assets/video_resound.mp4';
-import FormResound from '../components/FormResound';
 import VideoPlayer from '../components/VideoPlayer';
+import VisitorForm from '../components/VisitorForm';
 
 function Resound() {
     const [isVideoCompleted, setIsVideoCompleted] = useState(false);
@@ -11,7 +11,7 @@ function Resound() {
     return (
         <div>
             {!isVideoCompleted && <VideoPlayer onVideoEnd={handleVideoEnd} videoPath={video} />}
-            {isVideoCompleted && <FormResound />}
+            {isVideoCompleted && <VisitorForm customer='Resound' title='Bem vindo à Resound' />}
         </div>
     );
 }

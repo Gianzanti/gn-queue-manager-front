@@ -1,12 +1,20 @@
 import { Box, Button, Checkbox, FormControlLabel, TextField, Typography } from '@mui/material';
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
-import { insertVisitor } from '../services/api';
+import toast, { Toaster } from 'react-hot-toast';
+import { createVisitor } from '../services/api';
+import { validateEmail } from '../services/utils';
 import { Visitor } from '../types';
+import FSMessage from './Congratulations';
 
-function FormResound() {
+type VisitorFormProps = {
+    title: string;
+    customer: string;
+};
+
+function VisitorForm({ title, customer }: VisitorFormProps) {
     const [formData, setFormData] = useState<Visitor>({
-        customer: 'Resound',
+        customer,
         name: '',
         email: '',
         phone: '',
@@ -16,19 +24,8 @@ function FormResound() {
     });
 
     const addVisitor = useMutation({
-        mutationFn: insertVisitor,
+        mutationFn: createVisitor,
     });
-
-    //     saveFormData, {
-    //     onSuccess: () => {
-    //         // Handle success (e.g., show a success message, reset the form, etc.)
-    //         console.log('Form data saved successfully');
-    //     },
-    //     onError: (error: any) => {
-    //         // Handle error (e.g., show an error message)
-    //         console.error('Error saving form data', error);
-    //     },
-    // });
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value, type, checked } = e.target;
@@ -40,9 +37,27 @@ function FormResound() {
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        // Handle form submission
+
+        // validate email
+        if (validateEmail(formData.email) === false) {
+            toast.error('Email Inválido');
+            return;
+        }
+
+        if (!formData.lgpd) {
+            toast.error('Você precisa concordar com a LGPD');
+            return;
+        }
+
+        if (!formData.image_rights) {
+            toast.error('Você precisa concordar com a cessão de direitos de imagem');
+            return;
+        }
+
         addVisitor.mutate(formData);
     };
+
+    if (addVisitor.isSuccess) return <FSMessage message='A Resound agradece sua participação!' />;
 
     return (
         <Box
@@ -51,17 +66,18 @@ function FormResound() {
                 display: 'flex',
                 flexDirection: 'column',
                 gap: 2,
-                width: 300,
+                width: 600,
                 margin: '0 auto',
                 mt: 5,
             }}
             onSubmit={handleSubmit}
         >
+            <Toaster />
             <Typography variant='h4' component='h1' align='center' gutterBottom>
-                Simple Form
+                {title}
             </Typography>
             <TextField
-                label='Name'
+                label='Nome'
                 name='name'
                 value={formData.name}
                 onChange={handleChange}
@@ -80,7 +96,7 @@ function FormResound() {
                 required
             />
             <TextField
-                label='Phone Number'
+                label='Telefone'
                 name='phone'
                 value={formData.phone}
                 onChange={handleChange}
@@ -89,20 +105,18 @@ function FormResound() {
                 required
             />
             <FormControlLabel
-                control={
-                    <Checkbox name='option1' checked={formData.lgpd} onChange={handleChange} />
-                }
-                label='Option 1'
+                control={<Checkbox name='lgpd' checked={formData.lgpd} onChange={handleChange} />}
+                label='Concordo com a LGPD'
             />
             <FormControlLabel
                 control={
                     <Checkbox
-                        name='option2'
+                        name='image_rights'
                         checked={formData.image_rights}
                         onChange={handleChange}
                     />
                 }
-                label='Option 2'
+                label='Concordo com a cessão de direitos de imagem'
             />
             <Button
                 type='submit'
@@ -111,14 +125,13 @@ function FormResound() {
                 fullWidth
                 disabled={addVisitor.isPending}
             >
-                {addVisitor.isPending ? 'Submitting...' : 'Submit'}
+                {addVisitor.isPending ? 'Enviando...' : 'Enviar'}
             </Button>
-            {addVisitor.isError && <Typography color='error'>Error submitting the form</Typography>}
-            {addVisitor.isSuccess && (
-                <Typography color='primary'>Form submitted successfully!</Typography>
+            {addVisitor.isError && (
+                <Typography color='error'>Erro submetendo formulário</Typography>
             )}
         </Box>
     );
 }
 
-export default FormResound;
+export default VisitorForm;

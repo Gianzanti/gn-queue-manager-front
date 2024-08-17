@@ -1,7 +1,7 @@
 {
   "name": "gn-queue-frontend",
   "homepage": ".",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "private": true,
   "type": "module",
   "scripts": {
@@ -20,10 +20,11 @@
     "@tanstack/react-query-devtools": "^5.51",
     "axios": "^1.7",
     "clsx": "^2.1",
-    "dayjs": "^1.11",
+    "dayjs": "^1.11.12",
     "nanoid": "^5.0",
     "react": "^18.3",
     "react-dom": "^18.3",
+    "react-hot-toast": "^2.4.1",
     "react-router-dom": "^6.26.1"
   },
   "devDependencies": {

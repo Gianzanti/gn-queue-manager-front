@@ -12,6 +12,7 @@ function FormResound() {
         phone: '',
         lgpd: false,
         image_rights: false,
+        confirmVisit: false,
     });
 
     const addVisitor = useMutation({

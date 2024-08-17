@@ -66,10 +66,10 @@ const VisitorTable: React.FC = () => {
                             <TableCell>{visitor.observations}</TableCell>
                             <TableCell>{visitor.confirmVisit ? 'Yes' : 'No'}</TableCell>
                             <TableCell>
-                                <IconButton onClick={() => handleEdit(visitor.id)}>
+                                <IconButton onClick={() => handleEdit(visitor.id!)}>
                                     <EditIcon width={30} fill='black' />
                                 </IconButton>
-                                <IconButton onClick={() => handleDelete(visitor.id)}>
+                                <IconButton onClick={() => handleDelete(visitor.id!)}>
                                     <DeleteIcon width={30} fill='black' />
                                 </IconButton>
                             </TableCell>
@@ -83,6 +83,7 @@ const VisitorTable: React.FC = () => {
 
 const handleEdit = (id: number) => {
     // Implement edit functionality
+    // eslint-disable-next-line no-console
     console.log('Edit', id);
 };
 

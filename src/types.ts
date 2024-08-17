@@ -1,11 +1,11 @@
 export interface Visitor {
-    id: number;
+    id?: number;
     customer: string;
     name: string;
     email: string;
     phone: string;
     lgpd: boolean;
     image_rights: boolean;
-    observations: string;
+    observations?: string;
     confirmVisit: boolean;
 }

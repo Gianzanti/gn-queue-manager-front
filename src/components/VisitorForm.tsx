@@ -20,7 +20,7 @@ function VisitorForm({ title, customer }: VisitorFormProps) {
         phone: '',
         lgpd: false,
         image_rights: false,
-        confirmVisit: false,
+        confirm_visit: false,
     });
 
     const addVisitor = useMutation({
@@ -38,9 +38,21 @@ function VisitorForm({ title, customer }: VisitorFormProps) {
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 
+        // validate name
+        if (formData.name.trim() === '') {
+            toast.error('Nome é obrigatório');
+            return;
+        }
+
         // validate email
         if (validateEmail(formData.email) === false) {
             toast.error('Email Inválido');
+            return;
+        }
+
+        // validate phone
+        if (formData.phone.trim() === '') {
+            toast.error('Telefone é obrigatório');
             return;
         }
 
@@ -83,7 +95,7 @@ function VisitorForm({ title, customer }: VisitorFormProps) {
                 onChange={handleChange}
                 variant='outlined'
                 fullWidth
-                required
+                // required
             />
             <TextField
                 label='Email'
@@ -93,7 +105,7 @@ function VisitorForm({ title, customer }: VisitorFormProps) {
                 variant='outlined'
                 type='email'
                 fullWidth
-                required
+                // required
             />
             <TextField
                 label='Telefone'
@@ -102,7 +114,7 @@ function VisitorForm({ title, customer }: VisitorFormProps) {
                 onChange={handleChange}
                 variant='outlined'
                 fullWidth
-                required
+                // required
             />
             <FormControlLabel
                 control={<Checkbox name='lgpd' checked={formData.lgpd} onChange={handleChange} />}

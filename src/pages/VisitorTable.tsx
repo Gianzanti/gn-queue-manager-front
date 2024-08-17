@@ -10,12 +10,14 @@ import {
     IconButton,
     TextField,
 } from '@mui/material';
-import { DataGrid, GridColDef, GridRenderCellParams } from '@mui/x-data-grid';
+import { DataGrid, GridColDef, GridRenderCellParams, GridToolbar } from '@mui/x-data-grid';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import dayjs from 'dayjs';
 import React, { useState } from 'react';
+import toast, { Toaster } from 'react-hot-toast';
 import DeleteIcon from '../components/icons/DeleteIcon';
 import EditIcon from '../components/icons/EditIcon';
+import MarkerIcon from '../components/icons/MarkerIcon';
 import { createVisitor, deleteVisitor, fetchVisitors, updateVisitor } from '../services/api';
 import { Visitor } from '../types';
 
@@ -34,6 +36,10 @@ const VisitorTable: React.FC = () => {
         mutationFn: (id: number) => deleteVisitor(id),
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['visitors'] });
+            toast.success('Visitante deletado com sucesso');
+        },
+        onError: () => {
+            toast.error('Erro ao deletar visitante');
         },
     });
 
@@ -41,6 +47,10 @@ const VisitorTable: React.FC = () => {
         mutationFn: createVisitor,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['visitors'] });
+            toast.success('Visitante criado com sucesso');
+        },
+        onError: () => {
+            toast.error('Erro ao criar visitante');
         },
     });
 
@@ -48,6 +58,10 @@ const VisitorTable: React.FC = () => {
         mutationFn: updateVisitor,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['visitors'] });
+            toast.success('Visitante atualizado com sucesso');
+        },
+        onError: () => {
+            toast.error('Erro ao atualizar visitante');
         },
     });
 
@@ -78,6 +92,10 @@ const VisitorTable: React.FC = () => {
         setOpen(false);
     };
 
+    const toogleVisit = (visitor: Visitor) => {
+        updateMutation.mutate({ ...visitor, confirm_visit: !visitor.confirm_visit });
+    };
+
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (currentVisitor) {
             setCurrentVisitor({ ...currentVisitor, [e.target.name]: e.target.value });
@@ -96,7 +114,6 @@ const VisitorTable: React.FC = () => {
         {
             field: 'customer',
             headerName: 'Empresa',
-            // flex: 0.125,
             minWidth: 100,
             sortingOrder: ['desc', 'asc'],
         },
@@ -112,39 +129,44 @@ const VisitorTable: React.FC = () => {
             },
         },
         { field: 'observations', headerName: 'Observações', flex: 0.3, minWidth: 300 },
-        { field: 'confirmVisit', headerName: 'Confirmado ?', width: 120, type: 'boolean' },
+        { field: 'confirm_visit', headerName: 'Confirmado ?', width: 120, type: 'boolean' },
         {
             field: 'actions',
             headerName: 'Actions',
             width: 150,
             renderCell: (params: GridRenderCellParams) => (
                 <>
+                    <IconButton onClick={() => toogleVisit(params.row)}>
+                        <MarkerIcon width={25} fill='blue' />
+                    </IconButton>
                     <IconButton onClick={() => handleEdit(params.row)}>
                         <EditIcon width={25} fill='black' />
                     </IconButton>
                     <IconButton onClick={() => handleDelete(params.row.id)}>
-                        <DeleteIcon width={25} fill='black' />
+                        <DeleteIcon width={25} fill='red' />
                     </IconButton>
                 </>
             ),
         },
     ];
 
-    if (isLoading) {
-        return <div>Carregando dados...</div>;
-    }
+    if (isLoading) return <div>Carregando dados...</div>;
 
-    if (isError) {
-        return <div>Erro ao carregar dados!</div>;
-    }
+    if (isError) return <div>Erro ao carregar dados!</div>;
 
     return (
         <>
-            <Button variant='contained' color='primary' onClick={handleCreate}>
+            <Toaster />
+            <Button variant='contained' color='primary' onClick={handleCreate} sx={{ m: 2 }}>
                 Adicionar Visitante
             </Button>
-            <div style={{ height: 600, width: '100%' }}>
-                <DataGrid rows={data || []} columns={columns} />
+            <div style={{ width: '100%' }}>
+                <DataGrid
+                    rows={data || []}
+                    columns={columns}
+                    onCellDoubleClick={(params) => toogleVisit(params.row as Visitor)}
+                    slots={{ toolbar: GridToolbar }}
+                />
             </div>
             <Dialog open={open} onClose={() => setOpen(false)}>
                 <DialogTitle>{isEditing ? 'Edit Visitor' : 'Add Visitor'}</DialogTitle>
@@ -212,9 +234,9 @@ const VisitorTable: React.FC = () => {
                     <FormControlLabel
                         control={
                             <Checkbox
-                                checked={currentVisitor?.confirmVisit || false}
+                                checked={currentVisitor?.confirm_visit || false}
                                 onChange={handleCheckboxChange}
-                                name='confirmVisit'
+                                name='confirm_visit'
                             />
                         }
                         label='Confirm Visit'

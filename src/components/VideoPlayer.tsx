@@ -39,6 +39,7 @@ const VideoPlayer: FC<VideoPlayerProps> = ({ videoPath, onVideoEnd }) => {
                 // controls
                 onEnded={handleVideoEnd}
                 autoPlay
+                muted
                 style={{ display: isFullScreen ? 'block' : 'none' }}
             >
                 <source src={videoPath} type='video/mp4' />

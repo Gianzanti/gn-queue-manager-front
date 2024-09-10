@@ -72,15 +72,15 @@ function VisitorForm({ customer }: VisitorFormProps) {
 
     if (addVisitor.isSuccess) return <FSMessage customer={customer} />;
 
-    const color = customer === 'Resound' ? 'black' : 'white';
+    const textColor = customer === 'Resound' ? 'black' : 'white';
+    const btnColor = customer === 'Resound' ? 'red' : 'blue';
 
     return (
         <Box
-            component='form'
             sx={{
                 display: 'flex',
                 justifyContent: 'center',
-                alignItems: 'center',
+                // alignItems: 'center',
                 height: '100vh',
                 width: '100vw',
                 backgroundImage:
@@ -91,7 +91,6 @@ function VisitorForm({ customer }: VisitorFormProps) {
                 backgroundPosition: 'top',
                 backgroundRepeat: 'no-repeat',
             }}
-            onSubmit={handleSubmit}
         >
             <Box
                 component='form'
@@ -100,8 +99,8 @@ function VisitorForm({ customer }: VisitorFormProps) {
                     flexDirection: 'column',
                     gap: 2,
                     width: '90%',
-                    margin: '0 auto',
-                    mt: -15,
+                    // margin: '0 auto',
+                    mt: 28,
                 }}
                 onSubmit={handleSubmit}
             >
@@ -114,7 +113,7 @@ function VisitorForm({ customer }: VisitorFormProps) {
                     onChange={handleChange}
                     variant='outlined'
                     fullWidth
-                    sx={{ input: { color } }}
+                    sx={{ input: { color: textColor } }}
                 />
                 <TextField
                     label='Email'
@@ -124,7 +123,7 @@ function VisitorForm({ customer }: VisitorFormProps) {
                     variant='outlined'
                     type='email'
                     fullWidth
-                    sx={{ input: { color } }}
+                    sx={{ input: { color: textColor } }}
                 />
                 <TextField
                     label='Telefone'
@@ -133,13 +132,13 @@ function VisitorForm({ customer }: VisitorFormProps) {
                     onChange={handleChange}
                     variant='outlined'
                     fullWidth
-                    sx={{ input: { color } }}
+                    sx={{ input: { color: textColor } }}
                 />
                 <FormControlLabel
                     control={
                         <Checkbox name='lgpd' checked={formData.lgpd} onChange={handleChange} />
                     }
-                    label={<Typography color={color}>Concordo com a LGPD</Typography>}
+                    label={<Typography color={textColor}>Concordo com a LGPD</Typography>}
                 />
                 <FormControlLabel
                     control={
@@ -150,7 +149,7 @@ function VisitorForm({ customer }: VisitorFormProps) {
                         />
                     }
                     label={
-                        <Typography color={color}>
+                        <Typography color={textColor}>
                             Concordo com a cessão de direitos de imagem
                         </Typography>
                     }
@@ -158,9 +157,9 @@ function VisitorForm({ customer }: VisitorFormProps) {
                 <Button
                     type='submit'
                     variant='contained'
-                    color='primary'
                     fullWidth
                     disabled={addVisitor.isPending}
+                    sx={{ backgroundColor: btnColor }}
                 >
                     {addVisitor.isPending ? 'Enviando...' : 'Enviar'}
                 </Button>

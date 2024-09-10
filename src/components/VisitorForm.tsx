@@ -87,8 +87,8 @@ function VisitorForm({ customer }: VisitorFormProps) {
                     customer === 'Resound'
                         ? `url(${cadastro_resound})`
                         : `url(${cadastro_beltone})`,
-                backgroundSize: 'contain',
-                backgroundPosition: 'top',
+                backgroundSize: '100% 100%',
+                backgroundPosition: 'top center',
                 backgroundRepeat: 'no-repeat',
             }}
         >

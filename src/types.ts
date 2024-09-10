@@ -9,4 +9,6 @@ export interface Visitor {
     image_rights: boolean;
     observations?: string;
     confirm_visit: boolean;
+    state: string;
+    job: string;
 }

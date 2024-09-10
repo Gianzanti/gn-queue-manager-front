@@ -6,8 +6,13 @@ import {
     DialogActions,
     DialogContent,
     DialogTitle,
+    FormControl,
     FormControlLabel,
     IconButton,
+    InputLabel,
+    MenuItem,
+    Select,
+    SelectChangeEvent,
     TextField,
 } from '@mui/material';
 import { DataGrid, GridColDef, GridRenderCellParams, GridToolbar } from '@mui/x-data-grid';
@@ -110,6 +115,20 @@ const VisitorTable: React.FC = () => {
         }
     };
 
+    const handleSelectChange = (e: SelectChangeEvent) => {
+        if (currentVisitor) {
+            setCurrentVisitor({
+                ...currentVisitor,
+                [e.target.name as string]: e.target.value as string,
+            });
+        } else {
+            setCurrentVisitor({
+                ...currentVisitor!,
+                [e.target.name as string]: e.target.value as string,
+            });
+        }
+    };
+
     const columns: GridColDef[] = [
         {
             field: 'customer',
@@ -120,6 +139,8 @@ const VisitorTable: React.FC = () => {
         { field: 'name', headerName: 'Nome', minWidth: 200 },
         { field: 'email', headerName: 'Email', minWidth: 200 },
         { field: 'phone', headerName: 'Telefone', minWidth: 150 },
+        { field: 'state', headerName: 'Estado', minWidth: 150 },
+        { field: 'job', headerName: 'Profissão', minWidth: 150 },
         {
             field: 'created_at',
             headerName: 'Criação',
@@ -203,6 +224,60 @@ const VisitorTable: React.FC = () => {
                         onChange={handleChange}
                         fullWidth
                     />
+                    <FormControl fullWidth margin='dense'>
+                        <InputLabel id='state_label'>Estado</InputLabel>
+                        <Select
+                            labelId='state_label'
+                            id='demo-select-small'
+                            label='Estado'
+                            name='state'
+                            value={currentVisitor?.state || ''}
+                            onChange={handleSelectChange}
+                        >
+                            <MenuItem value={'AC'}>Acre</MenuItem>
+                            <MenuItem value={'AL'}>Alagoas</MenuItem>
+                            <MenuItem value={'AP'}>Amapá</MenuItem>
+                            <MenuItem value={'AM'}>Amazonas</MenuItem>
+                            <MenuItem value={'BA'}>Bahia</MenuItem>
+                            <MenuItem value={'CE'}>Ceará</MenuItem>
+                            <MenuItem value={'DF'}>Distrito Federal</MenuItem>
+                            <MenuItem value={'ES'}>Espírito Santo</MenuItem>
+                            <MenuItem value={'GO'}>Goiás</MenuItem>
+                            <MenuItem value={'MA'}>Maranhão</MenuItem>
+                            <MenuItem value={'MT'}>Mato Grosso</MenuItem>
+                            <MenuItem value={'MS'}>Mato Grosso do Sul</MenuItem>
+                            <MenuItem value={'MG'}>Minas Gerais</MenuItem>
+                            <MenuItem value={'PA'}>Pará</MenuItem>
+                            <MenuItem value={'PB'}>Paraíba</MenuItem>
+                            <MenuItem value={'PR'}>Paraná</MenuItem>
+                            <MenuItem value={'PE'}>Pernambuco</MenuItem>
+                            <MenuItem value={'PI'}>Piauí</MenuItem>
+                            <MenuItem value={'RJ'}>Rio de Janeiro</MenuItem>
+                            <MenuItem value={'RN'}>Rio Grande do Norte</MenuItem>
+                            <MenuItem value={'RS'}>Rio Grande do Sul</MenuItem>
+                            <MenuItem value={'RO'}>Rondônia</MenuItem>
+                            <MenuItem value={'RR'}>Roraima</MenuItem>
+                            <MenuItem value={'SC'}>Santa Catarina</MenuItem>
+                            <MenuItem value={'SP'}>São Paulo</MenuItem>
+                            <MenuItem value={'SE'}>Sergipe</MenuItem>
+                            <MenuItem value={'TO'}>Tocantins</MenuItem>
+                        </Select>
+                    </FormControl>
+                    <FormControl fullWidth margin='dense'>
+                        <InputLabel id='job_label'>Profissão</InputLabel>
+                        <Select
+                            labelId='job_label'
+                            id='demo-job-select-small'
+                            label='Profissão'
+                            name='job'
+                            value={currentVisitor?.job || ''}
+                            onChange={handleSelectChange}
+                        >
+                            <MenuItem value={'FGO'}>Fonoaudiólogo</MenuItem>
+                            <MenuItem value={'ORL'}>Otorrino</MenuItem>
+                            <MenuItem value={'EXP'}>Expositor</MenuItem>
+                        </Select>
+                    </FormControl>
                     <FormControlLabel
                         control={
                             <Checkbox

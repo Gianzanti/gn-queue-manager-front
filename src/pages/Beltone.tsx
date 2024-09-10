@@ -1,7 +1,9 @@
+import { Box, ThemeProvider } from '@mui/material';
 import { useState } from 'react';
 import video from '../assets/Beltone.mp4';
 import VideoPlayer from '../components/VideoPlayer';
 import VisitorForm from '../components/VisitorForm';
+import { beltone_theme } from '../services/providers/themes';
 
 function Beltone() {
     const [isVideoCompleted, setIsVideoCompleted] = useState(false);
@@ -9,10 +11,12 @@ function Beltone() {
     const handleVideoEnd = () => setIsVideoCompleted(true);
 
     return (
-        <div>
-            {!isVideoCompleted && <VideoPlayer onVideoEnd={handleVideoEnd} videoPath={video} />}
-            {isVideoCompleted && <VisitorForm customer='Beltone' />}
-        </div>
+        <ThemeProvider theme={beltone_theme}>
+            <Box sx={{ backgroundColor: '#005C9F' }}>
+                {!isVideoCompleted && <VideoPlayer onVideoEnd={handleVideoEnd} videoPath={video} />}
+                {isVideoCompleted && <VisitorForm customer='Beltone' />}
+            </Box>
+        </ThemeProvider>
     );
 }
 

@@ -8,7 +8,7 @@ import { REFRESH_SECONDS } from './constants';
 import Beltone from './pages/Beltone';
 import Resound from './pages/Resound';
 import VisitorTable from './pages/VisitorTable';
-import { theme } from './services/providers/themes';
+import { resound_theme } from './services/providers/themes';
 
 const queryClient = new QueryClient({
     defaultOptions: {
@@ -32,7 +32,7 @@ if (rootElement && !rootElement?.innerHTML) {
     createRoot(rootElement).render(
         <StrictMode>
             <QueryClientProvider client={queryClient}>
-                <ThemeProvider theme={theme}>
+                <ThemeProvider theme={resound_theme}>
                     <CssBaseline enableColorScheme={true} />
                     <RouterProvider router={router} />
                     <ReactQueryDevtools buttonPosition='bottom-right' />

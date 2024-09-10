@@ -18,8 +18,8 @@ const FSMessage: FC<FSMessageProps> = ({ customer }) => {
                 width: '100vw',
                 backgroundImage:
                     customer === 'Resound' ? `url(${final_resound})` : `url(${final_beltone})`,
-                backgroundSize: '100% 100%',
-                backgroundPosition: 'top center',
+                backgroundSize: 'contain',
+                backgroundPosition: 'center center',
                 backgroundRepeat: 'no-repeat',
             }}
         />

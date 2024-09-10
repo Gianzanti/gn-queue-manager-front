@@ -2,17 +2,18 @@ import { Box, Button, Checkbox, FormControlLabel, TextField, Typography } from '
 import { useMutation } from '@tanstack/react-query';
 import { useState } from 'react';
 import toast, { Toaster } from 'react-hot-toast';
+import cadastro_beltone from '../assets/cadastro_beltone.png';
+import cadastro_resound from '../assets/cadastro_resound.png';
 import { createVisitor } from '../services/api';
 import { validateEmail } from '../services/utils';
 import { Visitor } from '../types';
 import FSMessage from './Congratulations';
 
 type VisitorFormProps = {
-    title: string;
     customer: string;
 };
 
-function VisitorForm({ title, customer }: VisitorFormProps) {
+function VisitorForm({ customer }: VisitorFormProps) {
     const [formData, setFormData] = useState<Visitor>({
         customer,
         name: '',
@@ -69,80 +70,104 @@ function VisitorForm({ title, customer }: VisitorFormProps) {
         addVisitor.mutate(formData);
     };
 
-    if (addVisitor.isSuccess)
-        return <FSMessage message={`A ${customer} agradece sua participação!`} />;
+    if (addVisitor.isSuccess) return <FSMessage customer={customer} />;
+
+    const color = customer === 'Resound' ? 'black' : 'white';
 
     return (
         <Box
             component='form'
             sx={{
                 display: 'flex',
-                flexDirection: 'column',
-                gap: 2,
-                width: '90%',
-                margin: '0 auto',
-                mt: 5,
+                justifyContent: 'center',
+                alignItems: 'center',
+                height: '100vh',
+                width: '100vw',
+                backgroundImage:
+                    customer === 'Resound'
+                        ? `url(${cadastro_resound})`
+                        : `url(${cadastro_beltone})`,
+                backgroundSize: 'contain',
+                backgroundPosition: 'top',
+                backgroundRepeat: 'no-repeat',
             }}
             onSubmit={handleSubmit}
         >
-            <Toaster />
-            <Typography variant='h4' component='h1' align='center' gutterBottom>
-                {title}
-            </Typography>
-            <TextField
-                label='Nome'
-                name='name'
-                value={formData.name}
-                onChange={handleChange}
-                variant='outlined'
-                fullWidth
-                // required
-            />
-            <TextField
-                label='Email'
-                name='email'
-                value={formData.email}
-                onChange={handleChange}
-                variant='outlined'
-                type='email'
-                fullWidth
-                // required
-            />
-            <TextField
-                label='Telefone'
-                name='phone'
-                value={formData.phone}
-                onChange={handleChange}
-                variant='outlined'
-                fullWidth
-                // required
-            />
-            <FormControlLabel
-                control={<Checkbox name='lgpd' checked={formData.lgpd} onChange={handleChange} />}
-                label='Concordo com a LGPD'
-            />
-            <FormControlLabel
-                control={
-                    <Checkbox
-                        name='image_rights'
-                        checked={formData.image_rights}
-                        onChange={handleChange}
-                    />
-                }
-                label='Concordo com a cessão de direitos de imagem'
-            />
-            <Button
-                type='submit'
-                variant='contained'
-                color='primary'
-                fullWidth
-                disabled={addVisitor.isPending}
+            <Box
+                component='form'
+                sx={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 2,
+                    width: '90%',
+                    margin: '0 auto',
+                    mt: -15,
+                }}
+                onSubmit={handleSubmit}
             >
-                {addVisitor.isPending ? 'Enviando...' : 'Enviar'}
-            </Button>
-            {addVisitor.isError && (
-                <Typography color='error'>Erro submetendo formulário</Typography>
-            )}
+                <Toaster />
+
+                <TextField
+                    label='Nome'
+                    name='name'
+                    value={formData.name}
+                    onChange={handleChange}
+                    variant='outlined'
+                    fullWidth
+                    sx={{ input: { color } }}
+                />
+                <TextField
+                    label='Email'
+                    name='email'
+                    value={formData.email}
+                    onChange={handleChange}
+                    variant='outlined'
+                    type='email'
+                    fullWidth
+                    sx={{ input: { color } }}
+                />
+                <TextField
+                    label='Telefone'
+                    name='phone'
+                    value={formData.phone}
+                    onChange={handleChange}
+                    variant='outlined'
+                    fullWidth
+                    sx={{ input: { color } }}
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox name='lgpd' checked={formData.lgpd} onChange={handleChange} />
+                    }
+                    label={<Typography color={color}>Concordo com a LGPD</Typography>}
+                />
+                <FormControlLabel
+                    control={
+                        <Checkbox
+                            name='image_rights'
+                            checked={formData.image_rights}
+                            onChange={handleChange}
+                        />
+                    }
+                    label={
+                        <Typography color={color}>
+                            Concordo com a cessão de direitos de imagem
+                        </Typography>
+                    }
+                />
+                <Button
+                    type='submit'
+                    variant='contained'
+                    color='primary'
+                    fullWidth
+                    disabled={addVisitor.isPending}
+                >
+                    {addVisitor.isPending ? 'Enviando...' : 'Enviar'}
+                </Button>
+                {addVisitor.isError && (
+                    <Typography color='error'>Erro submetendo formulário</Typography>
+                )}
+            </Box>
         </Box>
     );
 }

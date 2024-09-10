@@ -1,4 +1,3 @@
-// src/components/VisitorTable.tsx
 import {
     Button,
     Checkbox,
@@ -283,7 +282,7 @@ const VisitorTable: React.FC = () => {
                             <Checkbox
                                 checked={currentVisitor?.lgpd || false}
                                 onChange={handleCheckboxChange}
-                                name='acceptTerms'
+                                name='lgpd'
                             />
                         }
                         label='Accept Terms'
